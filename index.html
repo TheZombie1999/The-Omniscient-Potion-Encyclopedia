@@ -14,8 +14,13 @@
     <li></li>
 </ul>
 
+<py-config>
+    packages = ["requests", "BeautifulSoup", "typing"]
+  </py-config>
+
 <py-script>
-    print('Hello, World!')
+    page = requests.get("https://en.uesp.net/wiki/Skyrim:Ingredients")
+    print(page)
 </py-script>
 
 
