@@ -3,6 +3,11 @@ from typing import List, Set
 import requests
 from bs4 import BeautifulSoup
 
+import pyodide_http
+
+# Patch the Requests library so it works with Pyscript
+pyodide_http.patch_all()
+
 class Property:
 
     def __init__(self, name:str, effectType:str) -> None:

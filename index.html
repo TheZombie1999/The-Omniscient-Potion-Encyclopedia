@@ -15,16 +15,10 @@
 </ul>
 
 <py-config>
-    packages = ["requests", "beautifulsoup4", "typing"]
+    packages = ["requests", "beautifulsoup4", "typing", "pyodide-http"]
   </py-config>
 
-<py-script>
-    from typing import List, Set
-    import requests
-    from bs4 import BeautifulSoup
-
-    page = requests.get("https://en.uesp.net/wiki/Skyrim:Ingredients")
-    print(page)
+<py-script src="./potions.py">
 </py-script>
 
 
