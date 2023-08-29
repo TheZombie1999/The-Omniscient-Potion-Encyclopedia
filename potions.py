@@ -8,9 +8,6 @@ from bs4 import BeautifulSoup
 # Patch the Requests library so it works with Pyscript
 pyodide_http.patch_all()
 
-URL = "https://en.uesp.net/wiki/Skyrim:Ingredients"
-page = requests.get(URL)
-print(page)
 
 class Property:
 
