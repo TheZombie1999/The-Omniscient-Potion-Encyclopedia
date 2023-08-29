@@ -18,16 +18,7 @@
     packages = ["requests", "beautifulsoup4", "typing", "pyodide-http"]
   </py-config>
 
-<py-script>
-    import requests
-    import pyodide_http
-
-    # Patch the Requests library so it works with Pyscript
-    pyodide_http.patch_all()
-
-    # Make a request to the JSON Placeholder API
-    response = requests.get("https://en.uesp.net/wiki/Skyrim:Ingredients")
-    print(response.json())
+<py-script src="./potions.py">
 </py-script>
 
 
