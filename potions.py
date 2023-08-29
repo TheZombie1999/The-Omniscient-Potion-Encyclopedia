@@ -3618,7 +3618,7 @@ Retrieved from "<a dir="ltr" href="https://en.uesp.net/w/index.php?title=Skyrim:
     </iframe></html>
     """
 
-    soup = BeautifulSoup(page.content, "html.parser")
+    soup = BeautifulSoup(page, "html.parser")
 
     table = soup.find_all("table", class_="wikitable")
 
