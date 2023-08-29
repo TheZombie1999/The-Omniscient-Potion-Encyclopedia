@@ -1,12 +1,16 @@
 
 from typing import List, Set
 import requests
+import pyodide_http
 from bs4 import BeautifulSoup
 
-import pyodide_http
 
 # Patch the Requests library so it works with Pyscript
 pyodide_http.patch_all()
+
+URL = "https://en.uesp.net/wiki/Skyrim:Ingredients"
+page = requests.get(URL)
+print(page)
 
 class Property:
 
@@ -188,4 +192,4 @@ if __name__ == '__main__':
     # print(create_recipe({Property("Fortify One-handed", "EffectPos"), Property("Invisibility", "EffectPos")}, all=True))
     # print(create_recipe({Property("Fortify Block", "EffectPos"), Property("Fortify Heavy Armor", "EffectPos")}, all=True))
 
-    create_recipe({Property("Resist Fire", "EffectPos"), Property("Resist Frost", "EffectPos"), Property("Resist Shock", "EffectPos")}, all=True).writeToFile()
+    # create_recipe({Property("Resist Fire", "EffectPos"), Property("Resist Frost", "EffectPos"), Property("Resist Shock", "EffectPos")}, all=True).writeToFile()
