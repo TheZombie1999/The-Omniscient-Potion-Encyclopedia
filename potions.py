@@ -3722,6 +3722,7 @@ if pyscript:
         """
         # js.document.getElementByID('button').disabled=False
         Element("answer").element.innerHTML = answer
+        js.document.getElementById('button').disabled=False
         #print(create_recipe({Property("Resist Fire", "EffectPos"), Property("Resist Frost", "EffectPos"), Property("Resist Shock", "EffectPos")}, all=all))
 
 
