@@ -3669,8 +3669,8 @@ if pyscript:
     import js
     
     def hello_args():
-        js.document.getElementByID('button').disabled=True
-        js.document.getElementByID('button').style.display=None
+        # js.document.getElementByID('button').disabled=True
+        js.document.getElementByID('button').style.display='none'
 
         property1 = Property(Element("input1").element.value, "EffectPos")
         property2 = Property(Element("input2").element.value, "EffectPos")
