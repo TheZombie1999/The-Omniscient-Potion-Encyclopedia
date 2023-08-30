@@ -3668,8 +3668,9 @@ if pyscript:
 
     import js
     
-
     def hello_args():
+        js.document.getElementByID('button').disabled=True
+
         property1 = Property(Element("input1").element.value, "EffectPos")
         property2 = Property(Element("input2").element.value, "EffectPos")
         property3 = Property(Element("input3").element.value, "EffectPos")
@@ -3718,7 +3719,7 @@ if pyscript:
                 {ingredients}
         </table>
         """
-        
+        js.document.getElementByID('button').disabled=False
         Element("answer").element.innerHTML = answer
         #print(create_recipe({Property("Resist Fire", "EffectPos"), Property("Resist Frost", "EffectPos"), Property("Resist Shock", "EffectPos")}, all=all))
 
