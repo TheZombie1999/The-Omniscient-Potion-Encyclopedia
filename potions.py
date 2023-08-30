@@ -3670,7 +3670,7 @@ if pyscript:
     
     def hello_args():
         js.document.getElementByID('button').disabled=True
-        js.document.getElementByID('button').hidden=True
+        js.document.getElementByID('button').style.display="None"
 
         property1 = Property(Element("input1").element.value, "EffectPos")
         property2 = Property(Element("input2").element.value, "EffectPos")
