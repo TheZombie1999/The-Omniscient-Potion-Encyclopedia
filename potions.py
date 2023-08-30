@@ -3669,9 +3669,9 @@ if pyscript:
     import js
     
     def hello_args():
-        js.document.getElementById('button').disabled=True
+        js.document.getElementById('button').style.visibility = "hidden"
         # print(vars(js.document.getElementById('button')))
-        Element("answer").element.innerHTML = ""
+        
 
         property1 = Property(Element("input1").element.value, "EffectPos")
         property2 = Property(Element("input2").element.value, "EffectPos")
@@ -3723,7 +3723,7 @@ if pyscript:
         """
         # js.document.getElementByID('button').disabled=False
         Element("answer").element.innerHTML = answer
-        js.document.getElementById('button').disabled=False
+        js.document.getElementById('button').style.visibility = "visible"
         #print(create_recipe({Property("Resist Fire", "EffectPos"), Property("Resist Frost", "EffectPos"), Property("Resist Shock", "EffectPos")}, all=all))
 
 
