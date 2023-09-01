@@ -3747,9 +3747,6 @@ if pyscript:
         Element("answer").element.innerHTML = "<p> </p>"
 
     add_event_listener(js.document.getElementById("button"), "click", hello_args)
-    add_event_listener(js.document.getElementById("input1"), "click", clear_answer)
-    add_event_listener(js.document.getElementById("input2"), "click", clear_answer)
-    add_event_listener(js.document.getElementById("input3"), "click", clear_answer)
    
     # js.document.addEventListener("selectionchange",create_proxy(clear_answer) )
 
