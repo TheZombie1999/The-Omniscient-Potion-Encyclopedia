@@ -4,6 +4,7 @@
 <title>The Omniscient Potion Encyclopedia</title>
 <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
 <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -33,7 +34,8 @@
 <label> Only Use Two Ingrediens </label>
 <input type="checkbox" id="all" name="vehicle3" value="True"><br><br>
 
-<button py-click="hello_args()" class="py-button" id="button"> Compute Potions </button>
+<button id="button"> Compute Potions </button>
+<div id="loader"></div>
 <br>
 <div id="answer">
 
@@ -43,8 +45,13 @@
     packages = ["requests", "beautifulsoup4", "typing", "pyodide-http"]
 </py-config>
 
-<py-script src="./potions.py">
-</py-script>
+
+
+    <py-script src="./potions.py">
+    </py-script>
+
+    
+
 
 
 

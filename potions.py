@@ -3485,7 +3485,7 @@ class Property:
         return self.name == other.name
     
     def __hash__(self) -> int:
-        return hash((self.name))
+        return hash(self.name)
     
     def empty(self):
         if self.name:
@@ -3536,10 +3536,14 @@ class Potion:
     def __hash__(self) -> int:
         if len(self.ingredients) == 2:
             a = list(self.ingredients)
-            return hash((a[0], a[1]))
+            b = [a[0].name, a[1].name]
+            b.sort()
+            return hash((b[0], b[1]))
         else:
             a = list(self.ingredients)
-            return hash((a[0], a[1], a[2]))
+            b = [a[0].name, a[1].name, a[2].name]
+            b.sort()
+            return hash((b[0], b[1], b[2]))
 
     def __init__(self, ingredients:Set[Ingridient]):
         if len(ingredients) < 2 or len(ingredients) > 3:
@@ -3604,10 +3608,11 @@ class Recipe:
 def permute_ingredients(ingridients:List[Ingridient], all=True)-> Set[Potion]:
     potions:Set[Potion] = set()
 
-    for ingredient1 in ingridients:
-        for ingredient2 in ingridients:
-            if ingredient1 != ingredient2:
-                potions.add(Potion(ingredients={ingredient1, ingredient2}))
+    if not all:
+        for ingredient1 in ingridients:
+            for ingredient2 in ingridients:
+                if ingredient1 != ingredient2:
+                    potions.add(Potion(ingredients={ingredient1, ingredient2}))
     if all:
         for ingredient1 in ingridients:
             for ingredient2 in ingridients:
@@ -3653,9 +3658,20 @@ def get_all_propertys() -> Set[Property]:
 
     return list_of_properties
 
+list_of_potions_one = permute_ingredients(get_list_of_ingrediens(), all=True)
+list_of_potions_two = permute_ingredients(get_list_of_ingrediens(), all=False)
+
+
+
 def create_recipe(properties:Set[Property], all=True) -> Recipe:
 
-    list_of_potions = permute_ingredients(get_list_of_ingrediens(), all=all)
+    global list_of_potions_one
+    global list_of_potions_two
+
+    if all:
+        list_of_potions = list_of_potions_one
+    else:
+        list_of_potions = list_of_potions_two
 
     def property_filter(potion:Potion):
         if potion.get_Properties() == properties:
@@ -3667,12 +3683,11 @@ def create_recipe(properties:Set[Property], all=True) -> Recipe:
 if pyscript:
 
     import js
-    
-    def hello_args():
-        js.document.getElementById('button').style.display = "none"
-        # print(vars(js.document.getElementById('button')))
-        
+    from pyodide.ffi.wrappers import add_event_listener
+    from pyodide.ffi import create_proxy
 
+
+    def hello_args(*args):
         property1 = Property(Element("input1").element.value, "EffectPos")
         property2 = Property(Element("input2").element.value, "EffectPos")
         property3 = Property(Element("input3").element.value, "EffectPos")
@@ -3692,24 +3707,29 @@ if pyscript:
 
         recipe = create_recipe(arg_set, all=all)
 
+        if len(recipe.potions) == 0:
+            Element("answer").element.innerHTML = "<p> Combination Not Possible !</p>"
+            return
+
         if all:
             colums_head = """
                             <th> Ingredient 1 </th>
                             <th> Ingredient 2 </th>
                             <th> Ingredient 3 </th>
-                          """
+                        """
         else:
             colums_head = """
                             <th> Ingredient 1 </th>
                             <th> Ingredient 2 </th>
-                          """
+                        """
             
         ingredients = ""
 
         for p in recipe.potions:
             ingredients = ingredients + "<tr>"
             for i in p.ingredients:
-                ingredients = ingredients + "<td>" + f"{i.name}" + "</td>" + "\n"
+                name = i.name.replace('_', ' ').replace(".27", "'")
+                ingredients = ingredients + "<td>" + f"{name}" + "</td>" + "\n"
 
             ingredients = ingredients + "</tr>"
 
@@ -3721,18 +3741,23 @@ if pyscript:
                 {ingredients}
         </table>
         """
-        # js.document.getElementByID('button').disabled=False
         Element("answer").element.innerHTML = answer
-        js.document.getElementById('button').style.display = ""
-        #print(create_recipe({Property("Resist Fire", "EffectPos"), Property("Resist Frost", "EffectPos"), Property("Resist Shock", "EffectPos")}, all=all))
+    
+    def clear_answer():
+        Element("answer").element.innerHTML = "<p> </p>"
 
+    add_event_listener(js.document.getElementById("button"), "click", hello_args)
+    add_event_listener(js.document.getElementById("input1"), "click", clear_answer)
+    add_event_listener(js.document.getElementById("input2"), "click", clear_answer)
+    add_event_listener(js.document.getElementById("input3"), "click", clear_answer)
+   
+    # js.document.addEventListener("selectionchange",create_proxy(clear_answer) )
 
     for p in get_all_propertys(): 
 
         Element("attribute1").element.innerHTML = Element("attribute1").element.innerHTML + f"<option value=\"{p.name}\">{p.name}</option>"
         Element("attribute2").element.innerHTML = Element("attribute2").element.innerHTML + f"<option value=\"{p.name}\">{p.name}</option>"        
         Element("attribute3").element.innerHTML = Element("attribute3").element.innerHTML + f"<option value=\"{p.name}\">{p.name}</option>"
-
 
 
 
