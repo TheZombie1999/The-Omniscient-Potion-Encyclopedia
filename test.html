@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>The Omniscient Potion Encyclopedia</title>
+
+    <script type="text/javascript" defer>
+        function set() {
+            attr1 = document.getElementById("attribute1");
+            attr2 = document.getElementById("attribute2");
+            attr3 = document.getElementById("attribute3");
+
+            fetch('/list_of_ingrediens')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("HTTP error " + response.status);
+                    }
+                    return response.text();
+                })
+                .then(text => {
+                    attr1.innerHTML = text
+                    attr2.innerHTML = text
+                    attr3.innerHTML = text
+                })
+                .catch(error => {
+                    // Handle/report error
+                });
+        }
+
+
+        function get_result() {
+            input1 = document.getElementById("input1").value;
+            input2 = document.getElementById("input2").value;
+            input3 = document.getElementById("input3").value;
+
+            all = document.getElementById("all").checked;
+
+            fetch(`/get_answer?ingredient1=${input1}&ingredient2=${input2}&ingredient3=${input3}&all=${all}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("HTTP error " + response.status);
+                    }
+                    return response.text();
+                })
+                .then(text => {
+                    document.getElementById("answer").innerHTML = text;
+                })
+                .catch(error => {
+                    // Handle/report error
+                });
+        }
+    </script>
+
+</head>
+
+<body onload="set()">
+
+    <h1>The Omniscient Potion Encyclopedia</h1>
+
+
+    <lable> Choose Property 1: </lable><br>
+    <input id="input1" list="attribute1" name="attribute1">
+    <datalist id="attribute1">
+    </datalist><br>
+
+    <lable> Choose Property 2: </lable><br>
+    <input id="input2" list="attribute2" name="attribute2">
+    <datalist id="attribute2">
+    </datalist><br>
+
+    <lable> Choose Property 3: </lable><br>
+    <input id="input3" list="attribute3" name="attribute3">
+    <datalist id="attribute3">
+    </datalist><br>
+    <br>
+
+    <label> Only Use Two Ingrediens </label>
+    <input type="checkbox" id="all" name="vehicle3" value="True"><br><br>
+
+    <button id="button" onclick="get_result()"> Compute Potions </button>
+    <div id="loader"></div>
+    <br>
+    <div id="answer">
+
+    </div>
+
+
+</body>
+
+</html>

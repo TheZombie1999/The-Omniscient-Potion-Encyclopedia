@@ -3,8 +3,23 @@ from typing import List, Set, Optional
 import requests
 from bs4 import BeautifulSoup
 
+import time
 
-pyscript = True
+def timeit(method):
+
+    def timed(*args, **kw):
+        ts = time.time()
+        result = method(*args, **kw)
+        te = time.time()
+
+        print('%r (%r, %r) %2.2f sec' % \
+              (method.__name__, args, kw, te-ts))
+        return result
+
+    return timed
+
+
+pyscript = False
 
 page = """
 <!DOCTYPE html>
@@ -3605,6 +3620,7 @@ class Recipe:
         pass
     
 # Creats all possible potions from a list of ingredients
+@timeit
 def permute_ingredients(ingridients:List[Ingridient], all=True)-> Set[Potion]:
     potions:Set[Potion] = set()
 
@@ -3658,13 +3674,14 @@ def get_all_propertys() -> Set[Property]:
 
     return list_of_properties
 
+
+
+
 list_of_potions_one = permute_ingredients(get_list_of_ingrediens(), all=True)
 list_of_potions_two = permute_ingredients(get_list_of_ingrediens(), all=False)
 
-
-
+@timeit
 def create_recipe(properties:Set[Property], all=True) -> Recipe:
-
     global list_of_potions_one
     global list_of_potions_two
 
@@ -3679,6 +3696,45 @@ def create_recipe(properties:Set[Property], all=True) -> Recipe:
         return False
     
     return Recipe(properties, set(filter(property_filter, list_of_potions)))
+
+@timeit
+def create_recipe_table(recipe:Recipe, all) -> str:
+    if len(recipe.potions) == 0:
+        return "<p> Combination Not Possible !</p>"
+     
+    if all:
+        colums_head = """
+                        <th> Ingredient 1 </th>
+                        <th> Ingredient 2 </th>
+                        <th> Ingredient 3 </th>
+                    """
+    else:
+        colums_head = """
+                        <th> Ingredient 1 </th>
+                        <th> Ingredient 2 </th>
+                    """
+        
+    ingredients = ""
+
+    for p in recipe.potions:
+
+        ingredients = ingredients + "<tr>"
+        #for i in p.ingredients:
+            #name = i.name.replace('_', ' ').replace(".27", "'")
+            #ingredients = ingredients + "<td>" + f"{name}" + "</td>" + "\n"
+
+        ingredients = ingredients + "</tr>"
+
+    answer = f"""
+    <table>
+        <tr>
+            {colums_head}
+        </tr> 
+            {ingredients}
+    </table>
+    """
+    return answer
+
 
 if pyscript:
 
@@ -3751,10 +3807,10 @@ if pyscript:
     # js.document.addEventListener("selectionchange",create_proxy(clear_answer) )
 
     for p in get_all_propertys(): 
-
         Element("attribute1").element.innerHTML = Element("attribute1").element.innerHTML + f"<option value=\"{p.name}\">{p.name}</option>"
         Element("attribute2").element.innerHTML = Element("attribute2").element.innerHTML + f"<option value=\"{p.name}\">{p.name}</option>"        
         Element("attribute3").element.innerHTML = Element("attribute3").element.innerHTML + f"<option value=\"{p.name}\">{p.name}</option>"
+
 
 
 
